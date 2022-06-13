@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface Preferences {
 
-    fun getString(key: String, value: String): Flow<String>
+    fun getString(key: String, defaultValue: String): Flow<String>
 
-    fun getInt(key: String, value: Int): Flow<Int>
+    fun getInt(key: String, defaultValue: Int): Flow<Int>
 
-    fun getLong(key: String, value: Long): Flow<Long>
+    fun getLong(key: String, defaultValue: Long): Flow<Long>
 
-    fun getFloat(key: String, value: Float): Flow<Float>
+    fun getFloat(key: String, defaultValue: Float): Flow<Float>
 
-    fun getBoolean(key: String, value: Boolean): Flow<Boolean>
+    fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>
 
 
     interface Editor {

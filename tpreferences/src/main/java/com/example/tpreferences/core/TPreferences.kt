@@ -24,34 +24,34 @@ class TPreferences(context: Context) : Preferences, Preferences.Editor {
 
     private val cache = context.dataStore
 
-    override fun getString(key: String, value: String): Flow<String> {
+    override fun getString(key: String, defaultValue: String): Flow<String> {
         val prefKey = stringPreferencesKey(key)
 
-        return cache.data.map { it[prefKey] ?: value }
+        return cache.data.map { it[prefKey] ?: defaultValue }
     }
 
-    override fun getInt(key: String, value: Int): Flow<Int> {
+    override fun getInt(key: String, defaultValue: Int): Flow<Int> {
         val prefKey = intPreferencesKey(key)
 
-        return cache.data.map { it[prefKey] ?: value }
+        return cache.data.map { it[prefKey] ?: defaultValue }
     }
 
-    override fun getLong(key: String, value: Long): Flow<Long> {
+    override fun getLong(key: String, defaultValue: Long): Flow<Long> {
         val prefKey = longPreferencesKey(key)
 
-        return cache.data.map { it[prefKey] ?: value }
+        return cache.data.map { it[prefKey] ?: defaultValue }
     }
 
-    override fun getFloat(key: String, value: Float): Flow<Float> {
+    override fun getFloat(key: String, defaultValue: Float): Flow<Float> {
         val prefKey = floatPreferencesKey(key)
 
-        return cache.data.map { it[prefKey] ?: value }
+        return cache.data.map { it[prefKey] ?: defaultValue }
     }
 
-    override fun getBoolean(key: String, value: Boolean): Flow<Boolean> {
+    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> {
         val prefKey = booleanPreferencesKey(key)
 
-        return cache.data.map { it[prefKey] ?: value }
+        return cache.data.map { it[prefKey] ?: defaultValue }
     }
 
     override suspend fun putString(key: String, value: String?) {
