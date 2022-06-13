@@ -3,7 +3,7 @@
 Open source project and library for saving key value data for android base
 on [Google DataStore](https://github.com/googlecodelabs/android-datastore).
 
-If you want to save value, you use this sample code for understanding how it works :
+If you want to save value, you can use this sample code for understanding how it works :
 
 ```
 private suspend fun saveMyValue() {
@@ -13,7 +13,7 @@ private suspend fun saveMyValue() {
 
 ```
 
-If you want to get value, you use this sample code for understanding how it works :
+If you want to get value, you can use this sample code for understanding how it works :
 
 ```
 private suspend fun getMyValue() {
