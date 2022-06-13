@@ -35,9 +35,8 @@ private suspend fun clearMyValues() {
 
 ```
 
-
-
 Detailed example
+
 ```
 binding.button.setOnClickListener {
     CoroutineScope(Dispatchers.Main).launch {
@@ -58,4 +57,12 @@ CoroutineScope(Dispatchers.Main).launch {
 }
 
 ```
+
+Use it :
+```
+implementation 'com.github.xaldarof:TPreferences:latest_version'
+
+```
+
+
 

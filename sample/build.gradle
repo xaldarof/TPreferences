@@ -37,6 +37,7 @@ android {
 
 dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    implementation 'com.github.xaldarof:TPreferences:1.0.0'
 
     implementation project(":tpreferences")
 
