@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.button.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                preferences.putString("username", null)
+                preferences.putString("my_custom_key", null)
             }
         }
 
