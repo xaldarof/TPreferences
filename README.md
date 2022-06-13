@@ -18,7 +18,19 @@ If you want to get value, you use this sample code for understanding how it work
 ```
 private suspend fun getMyValue() {
     val preferences = TPreferences(this)
-    preferences.putString(key: "my_custom_key", defailtValue: "value")
+    preferences.getString(key: "my_custom_key", defailtValue: "value")
+}
+
+```
+
+To clear all (key,values) :
+
+```
+private suspend fun clearMyValues() {
+    val preferences = TPreferences(this)
+    preferences.getString("").collect {
+        Log.d("log","Value : $it")
+    }
 }
 
 ```

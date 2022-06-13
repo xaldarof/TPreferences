@@ -39,9 +39,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private suspend fun saveMyValue() {
-        val preferences = TPreferences(this)
-        preferences.putString("my_custom_key", "value")
-    }
 }
