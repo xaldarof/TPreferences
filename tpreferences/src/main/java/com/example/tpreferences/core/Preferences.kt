@@ -1,6 +1,7 @@
 package com.example.tpreferences.core
 
 import android.content.SharedPreferences
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @Author: Temur
@@ -9,32 +10,30 @@ import android.content.SharedPreferences
 
 interface Preferences {
 
-    fun getString(key: String, value: String): String
+    fun getString(key: String, value: String): Flow<String>
 
-    fun getInt(key: String, value: Int): Int
+    fun getInt(key: String, value: Int): Flow<Int>
 
-    fun getLong(key: String, value: Long): Long
+    fun getLong(key: String, value: Long): Flow<Long>
 
-    fun getFloat(key: String, value: Float): Float
+    fun getFloat(key: String, value: Float): Flow<Float>
 
-    fun getBoolean(key: String, value: Boolean): Boolean
+    fun getBoolean(key: String, value: Boolean): Flow<Boolean>
 
 
     interface Editor {
 
-        fun putString(key: String, value: String)
+        suspend fun putString(key: String, value: String?)
 
-        fun putInt(key: String, value: Int)
+        suspend fun putInt(key: String, value: Int?)
 
-        fun putLong(key: String, value: Long)
+        suspend fun putLong(key: String, value: Long?)
 
-        fun putFloat(key: String, value: Float)
+        suspend fun putFloat(key: String, value: Float?)
 
-        fun putBoolean(key: String, value: Boolean)
+        suspend fun putBoolean(key: String, value: Boolean?)
 
-        fun remove(key: String)
-
-        fun clear()
+        suspend fun clear(): Boolean
 
     }
 }

@@ -1,11 +1,11 @@
 package com.example.tpreferences.core
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.lang.reflect.Type
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 
 /**
@@ -13,92 +13,114 @@ import java.lang.reflect.Type
  * @Date: 12/06/2022
  */
 
-class TPreferences(private val context: Context) : Preferences, Preferences.Editor {
+class TPreferences(context: Context) : Preferences, Preferences.Editor {
 
-    override fun getString(key: String, value: String): String {
-        return get(key, value)
+    companion object {
+        const val PATH = "data_store"
     }
 
-    override fun getInt(key: String, value: Int): Int {
-        return get(key, value)
+    private val Context.dataStore: DataStore<androidx.datastore.preferences.core.Preferences> by preferencesDataStore(
+        PATH)
+
+    private val cache = context.dataStore
+
+    override fun getString(key: String, value: String): Flow<String> {
+        val prefKey = stringPreferencesKey(key)
+
+        return cache.data.map { it[prefKey] ?: value }
     }
 
-    override fun getLong(key: String, value: Long): Long {
-        return get(key, value)
+    override fun getInt(key: String, value: Int): Flow<Int> {
+        val prefKey = intPreferencesKey(key)
+
+        return cache.data.map { it[prefKey] ?: value }
     }
 
-    override fun getFloat(key: String, value: Float): Float {
-        return get(key, value)
+    override fun getLong(key: String, value: Long): Flow<Long> {
+        val prefKey = longPreferencesKey(key)
+
+        return cache.data.map { it[prefKey] ?: value }
     }
 
-    override fun getBoolean(key: String, value: Boolean): Boolean {
-        return get(key, value)
+    override fun getFloat(key: String, value: Float): Flow<Float> {
+        val prefKey = floatPreferencesKey(key)
+
+        return cache.data.map { it[prefKey] ?: value }
     }
 
-    override fun putString(key: String, value: String) {
-        val map = hashMapOf<String, String>()
-        map[key] = value
-        write(map)
+    override fun getBoolean(key: String, value: Boolean): Flow<Boolean> {
+        val prefKey = booleanPreferencesKey(key)
+
+        return cache.data.map { it[prefKey] ?: value }
     }
 
-    override fun putInt(key: String, value: Int) {
-        val map = hashMapOf<String, String>()
-        map[key] = value.toString()
-        write(map)
-    }
+    override suspend fun putString(key: String, value: String?) {
+        val prefKey = stringPreferencesKey(key)
 
-    override fun putLong(key: String, value: Long) {
-        val map = hashMapOf<String, String>()
-        map[key] = value.toString()
-        write(map)
-    }
-
-    override fun putFloat(key: String, value: Float) {
-        val map = hashMapOf<String, String>()
-        map[key] = value.toString()
-        write(map)
-    }
-
-    override fun putBoolean(key: String, value: Boolean) {
-        val map = hashMapOf<String, String>()
-        map[key] = value.toString()
-        write(map)
-    }
-
-    override fun remove(key: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun clear() {
-        TODO("Not yet implemented")
-    }
-
-    private fun write(data: Map<String, String>) {
-        val file = File(context.filesDir, "cache.txt")
-        if (file.exists()) {
-            val json = Gson().toJson(read())
-            val type: Type = object : TypeToken<Map<String, String>>() {}.type
-
-            val gson = GsonBuilder()
-                .create()
-            val empJoiningDateMap: Map<String, String> = gson.fromJson(json, type)
-
-            empJoiningDateMap.toMutableMap().putAll(data)
-
-            file.writeText(Gson().toJson(empJoiningDateMap))
+        cache.edit { data ->
+            if (value != null) {
+                data[prefKey] = value
+            } else {
+                data.remove(prefKey)
+            }
         }
-
-        file.writeText(Gson().toJson(data))
-
     }
 
-    private fun read(): String {
-        return File(context.filesDir, "cache.txt").readText()
+    override suspend fun putInt(key: String, value: Int?) {
+        val prefKey = intPreferencesKey(key)
+
+        cache.edit { data ->
+            if (value != null) {
+                data[prefKey] = value
+            } else {
+                data.remove(prefKey)
+            }
+        }
     }
 
-    private fun <T> get(key: String, value: T): T {
-        val data = Gson().fromJson<Map<String, T>>(read(), Map::class.java)
-        return data[key] ?: value
+    override suspend fun putLong(key: String, value: Long?) {
+        val prefKey = longPreferencesKey(key)
+
+        cache.edit { data ->
+            if (value != null) {
+                data[prefKey] = value
+            } else {
+                data.remove(prefKey)
+            }
+        }
     }
 
+    override suspend fun putFloat(key: String, value: Float?) {
+        val prefKey = floatPreferencesKey(key)
+
+        cache.edit { data ->
+            if (value != null) {
+                data[prefKey] = value
+            } else {
+                data.remove(prefKey)
+            }
+        }
+    }
+
+    override suspend fun putBoolean(key: String, value: Boolean?) {
+        val prefKey = booleanPreferencesKey(key)
+
+        cache.edit { data ->
+            if (value != null) {
+                data[prefKey] = value
+            } else {
+                data.remove(prefKey)
+            }
+        }
+    }
+
+
+    override suspend fun clear(): Boolean {
+        return try {
+            cache.edit { it.clear() }
+            true
+        } catch (e: Throwable) {
+            false
+        }
+    }
 }
