@@ -3,17 +3,13 @@
 Open source project and library for saving key value data for android base
 on [Google DataStore](https://github.com/googlecodelabs/android-datastore).
 
-```
-CoroutineScope(Dispatchers.Main).launch {
-    launch {
-        preferences.putString("my_custom_key", "value")
-    }
 
-    launch {
-        preferences.getString("my_custom_key", "your_default_value").collectLatest {
-            binding.button.text = it
-        }
-    }
+If you want to save value, you use this sample code for understanding how it works :
+
+```
+private suspend fun saveMyValue() {
+    val preferences = TPreferences(this)
+    preferences.putString("my_custom_key", "value")
 }
 
 ```
