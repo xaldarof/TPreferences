@@ -34,3 +34,28 @@ private suspend fun clearMyValues() {
 }
 
 ```
+
+
+
+Detailed example
+```
+binding.button.setOnClickListener {
+    CoroutineScope(Dispatchers.Main).launch {
+        preferences.putString("my_custom_key", null)
+    }
+}
+
+CoroutineScope(Dispatchers.Main).launch {
+    launch {
+        preferences.putString("my_custom_key", "value")
+    }
+
+    launch {
+        preferences.getString("my_custom_key", "your_default_value").collectLatest {
+            binding.button.text = it
+        }
+    }
+}
+
+```
+
